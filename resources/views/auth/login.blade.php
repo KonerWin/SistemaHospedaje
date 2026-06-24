@@ -20,6 +20,17 @@
         .input-group-text { background: #f8f9fa; border-right: none; }
         .form-control { border-left: none; }
         .form-control:focus { box-shadow: none; border-color: #ced4da; }
+        
+        /* Ajustes interactivos para el botón del ojo */
+        .input-group-text-toggle {
+            cursor: pointer;
+            background: #f8f9fa;
+            border-left: none;
+            transition: color 0.15s ease-in-out;
+        }
+        .input-group-text-toggle:hover {
+            color: #1a2035;
+        }
     </style>
 </head>
 <body class="hold-transition login-page">
@@ -56,6 +67,7 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
 
+                {{-- Correo electrónico --}}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
@@ -64,17 +76,23 @@
                            class="form-control @error('email') is-invalid @enderror"
                            placeholder="Correo electrónico"
                            value="{{ old('email') }}"
-                           autofocus required>
+                           autofocus required style="border-right: 1px solid #ced4da;">
                 </div>
 
+                {{-- Contraseña con ojo interactivo integrado --}}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input type="password" name="password"
-                           class="form-control"
+                    <input type="password" name="password" id="password"
+                           class="form-control @error('password') is-invalid @enderror"
                            placeholder="Contraseña"
                            required>
+                    <div class="input-group-append" id="togglePassword">
+                        <span class="input-group-text input-group-text-toggle" title="Mostrar/Ocultar contraseña">
+                            <i class="fas fa-eye" id="passwordIcon"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
@@ -111,5 +129,23 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+{{-- Script jQuery para cambiar dinámicamente el tipo de input y el icono --}}
+<script>
+    $(document).ready(function() {
+        $('#togglePassword').click(function() {
+            const passwordInput = $('#password');
+            const passwordIcon = $('#passwordIcon');
+            
+            if (passwordInput.attr('type') === 'password') {
+                passwordInput.attr('type', 'text');
+                passwordIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordInput.attr('type', 'password');
+                passwordIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+    });
+</script>
 </body>
 </html>

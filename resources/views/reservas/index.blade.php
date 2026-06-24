@@ -91,8 +91,8 @@
             </tbody>
         </table>
     </div>
-    <div class="card-footer">
-        {{ $reservas->withQueryString()->links() }}
+    <div class="card-footer d-flex justify-content-end">
+        {{ $reservas->withQueryString()->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection
